@@ -1,8 +1,8 @@
-import Navbar from '../../components/shared/NavBar'
+import Navbar from '../../../components/shared/NavBar'
 const Categories = () => {
   return (
     <>
-      <Navbar/>
+      <Navbar />
       <div className="container">
         <section className="section-title">
           <div className="px-2">
