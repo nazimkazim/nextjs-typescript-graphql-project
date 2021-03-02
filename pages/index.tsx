@@ -1,11 +1,7 @@
-import NavBar from '../components/shared/NavBar';
-import Hero from '../components/shared/Hero'
 const Home = () => (
-  <div className="portfolio-app">
-    <NavBar />
-    <Hero/>
+  <>
     <div className="container">
-      {/* HOME PAGE STARTS */ }
+      {/* HOME PAGE STARTS */}
       <section className="section-title">
         <div className="px-2">
           <div className="pt-5 pb-4">
@@ -99,19 +95,19 @@ const Home = () => (
         </div>
       </section>
       <a href="" className="btn btn-main bg-blue ttu">See More Posts</a>
-      {/* HOME PAGE ENDS */ }
-      {/* FORUM CATEGORIES START */ }
-      {/* FORUM CATEGORIES ENDS */ }
-      {/* TOPICS PAGE STARTS */ }
-      {/* TOPICS PAGE ENDS */ }
-      {/* POSTS PAGE STARTS */ }
-      {/* POSTS PAGE ENDS */ }
-      {/* LOGIN PAGE STARTS */ }
-      {/* LOGIN PAGE ENDS */ }
+      {/* HOME PAGE ENDS */}
+      {/* FORUM CATEGORIES START */}
+      {/* FORUM CATEGORIES ENDS */}
+      {/* TOPICS PAGE STARTS */}
+      {/* TOPICS PAGE ENDS */}
+      {/* POSTS PAGE STARTS */}
+      {/* POSTS PAGE ENDS */}
+      {/* LOGIN PAGE STARTS */}
+      {/* LOGIN PAGE ENDS */}
     </div>
 
-    {/* REPLIER STARTS */ }
-    {/* <div className='reply-controls is-open'> */ }
+    {/* REPLIER STARTS */}
+    {/* <div className='reply-controls is-open'> */}
     <div className='reply-controls'>
       <div className="reply-area">
         <div className="reply-to">
@@ -139,7 +135,7 @@ const Home = () => (
         <div className="submit-area">
           <div className="send mr-auto">
             <button
-              href="#"
+              href="#!"
               className="btn btn-main bg-blue py-2 ttu">Reply</button>
             <a className="btn py-2 ttu gray-10">Cancel</a>
           </div>
@@ -149,15 +145,15 @@ const Home = () => (
         </div>
       </div>
     </div>
-    {/* REPLIER ENDS */ }
-    {/* FOOTER STARTS */ }
+    {/* REPLIER ENDS */}
+    {/* FOOTER STARTS */}
     <footer id="sticky-footer" className="py-4 bg-black text-white-50 py-3">
       <div className="container text-center">
         <small>Copyright &copy; Your Website</small>
       </div>
     </footer>
-    {/* FOOTER ENDS */ }
-  </div>
+    {/* FOOTER ENDS */}
+  </>
 );
 
 export default Home;

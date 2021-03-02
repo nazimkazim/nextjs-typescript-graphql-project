@@ -1,10 +1,6 @@
-import Navbar from '../../../components/shared/NavBar'
-
 const Topics = () => {
   return (
     <>
-      <Navbar />
-      <div className="container">
         <section className="section-title">
           <div className="px-2">
             <div className="pt-5 pb-4">
@@ -44,7 +40,6 @@ const Topics = () => {
             </tbody>
           </table>
         </section>
-      </div>
     </>
   )
 }

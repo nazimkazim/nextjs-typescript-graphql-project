@@ -1,9 +1,6 @@
-import Navbar from '../../../components/shared/NavBar'
 const Categories = () => {
   return (
     <>
-      <Navbar />
-      <div className="container">
         <section className="section-title">
           <div className="px-2">
             <div className="pt-5 pb-4">
@@ -72,7 +69,6 @@ const Categories = () => {
             </div>
           </div>
         </section>
-      </div>
     </>
   )
 }
