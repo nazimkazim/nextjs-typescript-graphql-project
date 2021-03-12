@@ -35,14 +35,15 @@ const Portfolios = ({ portfolios }: any) => {
       </section>
       <section className="pb-5">
         <div className="row">
-          {portfolios.map((portfolio) => (
-            <div className="col-md-4">
-              <PortfolioCard 
-                key={portfolio._id} 
-                portfolio={portfolio} 
+          {portfolios.map((portfolio) => {
+            //console.log(portfolio._id);
+            return (<div className="col-md-4">
+              <PortfolioCard
+                key={portfolio._id}
+                portfolio={portfolio}
               />
-            </div>
-          ))}
+            </div>)
+          })}
 
         </div>
       </section>
