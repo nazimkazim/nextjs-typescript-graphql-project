@@ -1,10 +1,11 @@
 import axios from 'axios'
 import PortfolioCard from '../../components/portfolios/PostfolioCard'
+import Link from 'next/link'
 
 const fetchPortfolios = async () => {
   const query = `
-  query Portfolios {
-    portfolios {
+  query Portfolios{
+    portfolios{
       _id, 
       title, 
       company, 
@@ -15,10 +16,10 @@ const fetchPortfolios = async () => {
       startDate,
       endDate
   }}`
-  const data = await axios.post('http://localhost:3000/graphql', {
-    query
-  })
+  //const variables = { id }
+  const data = await axios.post('http://localhost:3000/graphql', { query });
   const res = await data.data;
+  console.log(res);
   return res;
 }
 
@@ -38,10 +39,17 @@ const Portfolios = ({ portfolios }: any) => {
           {portfolios.map((portfolio) => {
             //console.log(portfolio._id);
             return (<div className="col-md-4">
-              <PortfolioCard
-                key={portfolio._id}
-                portfolio={portfolio}
-              />
+              <Link
+                as={`portfolios/${portfolio._id}`}
+                href='/portfolios/[id]'
+              >
+                <a className="card-link">
+                  <PortfolioCard
+                    key={portfolio._id}
+                    portfolio={portfolio}
+                  />
+                </a>
+              </Link>
             </div>)
           })}
 
