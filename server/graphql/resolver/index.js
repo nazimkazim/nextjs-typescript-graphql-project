@@ -45,7 +45,7 @@ exports.portfolioQueries = {
   portfolios: () => {
     return data.portfolios;
   },
-  
+
 };
 
 exports.portfolioMutations = {
@@ -56,11 +56,16 @@ exports.portfolioMutations = {
     data.portfolios.push(newPortfolio);
     return newPortfolio;
   },
-  updatePortfolio: (root, {id, input}) => {
+  updatePortfolio: (root, { id, input }) => {
     const index = data.portfolios.findIndex(p => p._id === id);
-    const oldPortfolio = data.portfolios[index]
-    const newPortfolio = {...oldPortfolio, ...input}
+    const oldPortfolio = data.portfolios[index];
+    const newPortfolio = { ...oldPortfolio, ...input };
     data.portfolios[index] = newPortfolio;
     return newPortfolio;
+  },
+  deletePortfolio: (root, {id}) => {
+    const index = data.portfolios.findIndex(p => p._id === id);
+    data.portfolios.splice(index, 1);
+    return id;
   }
-}
+};

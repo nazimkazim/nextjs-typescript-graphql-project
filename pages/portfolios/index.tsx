@@ -1,72 +1,122 @@
+import { useState } from 'react';
 import axios from 'axios'
-import PortfolioCard from '../../components/portfolios/PostfolioCard'
-import Link from 'next/link'
-import { useState } from 'react'
+import PortfolioCard from '../../components/portfolios/PostfolioCard';
+import Link from 'next/link';
 
-const graphCreatePortfolios = async () => {
+const graphDeletePortfolio = (id) => {
   const query = `
-  mutation CreatePortfolio {
-    createPortfolio(input: {
-      title: "New title", 
-      company: "New company", 
-      companyWebsite: "New website", 
-      location: "New locatio", 
-      jobTitle: "New title", 
-      description: "New desc",
-      startDate: "12/12/2012",
-      endDate: "12/12/2013"
-    })
-    {
-      _id, 
-      title, 
-      company, 
-      companyWebsite, 
-      location, 
-      jobTitle, 
-      description,
-      startDate,
-      endDate
+    mutation DeletePortfolio {
+      deletePortfolio(id: "${id}")
     }
-  } 
   `
-  //const variables = { id }
-  const data = await axios.post('http://localhost:3000/graphql', { query });
-  const res = await data.data;
-  const newPortfolio = res.createPortfolio;
-  return newPortfolio
+  return axios.post('http://localhost:3000/graphql', { query })
+    .then(({data: graph}) => graph.data)
+    .then(data => data.deletePortfolio)
 }
 
-const fetchPortfolios = async () => {
+const graphUpdatePortfolio = (id) => {
   const query = `
-  query Portfolios{
-    portfolios{
-      _id, 
-      title, 
-      company, 
-      companyWebsite, 
-      location, 
-      jobTitle, 
-      description,
-      startDate,
-      endDate
-  }}`
-  //const variables = { id }
-  const data = await axios.post('http://localhost:3000/graphql', { query });
-  const res = await data.data;
-  return res;
+    mutation UpdatePortfolio {
+      updatePortfolio(id: "${id}",input: {
+        title: "UPDATE Job"
+        company: "UPDATE Company"
+        companyWebsite: "UPDATE Website"
+        location: "UPDATE Location"
+        jobTitle: "UPDATE Job Title"
+        description: "UPDATE Desc"
+        startDate: "12/12/2012 UPDATE"
+        endDate: "14/11/2013 UPDATE"
+      }) {
+        _id,
+        title,
+        company,
+        companyWebsite
+        location
+        jobTitle
+        description
+        startDate
+        endDate
+      }
+    }`;
+  return axios.post('http://localhost:3000/graphql', { query })
+    .then(({data: graph}) => graph.data)
+    .then(data => data.updatePortfolio)
 }
 
+const graphCreatePortfolio = () => {
+  const query = `
+    mutation CreatePortfolio {
+      createPortfolio(input: {
+        title: "New Job"
+        company: "New Company"
+        companyWebsite: "New Website"
+        location: "New Location"
+        jobTitle: "New Job Title"
+        description: "New Desc"
+        startDate: "12/12/2012"
+        endDate: "14/11/2013"
+      }) {
+        _id,
+        title,
+        company,
+        companyWebsite
+        location
+        jobTitle
+        description
+        startDate
+        endDate
+      }
+    }`;
+  return axios.post('http://localhost:3000/graphql', { query })
+    .then(({data: graph}) => graph.data)
+    .then(data => data.createPortfolio)
+}
 
-const Portfolios = ({ data }: any) => {
-  console.log(data.portfolios);
-  
-  const [portfolios, setPortfolios] = useState(data.portfolios)
+const fetchPortfolios = () => {
+  const query = `
+    query Portfolios {
+      portfolios {
+        _id,
+        title,
+        company,
+        companyWebsite
+        location
+        jobTitle
+        description
+        startDate
+        endDate
+      }
+    }`;
+  return axios.post('http://localhost:3000/graphql', { query })
+    .then(({data: graph}) => graph.data)
+    .then(data => data.portfolios)
+}
+
+const Portfolios = ({data}) => {
+  const [portfolios, setPortfolios] = useState(data.portfolios);
 
   const createPortfolio = async () => {
-    const newPortfolio = await graphCreatePortfolios()
-    const newPorfolios = [...portfolios, newPortfolio]
-    setPortfolios(newPorfolios)
+    const newPortfolio = await graphCreatePortfolio();
+    const newPortfolios = [...portfolios, newPortfolio];
+    setPortfolios(newPortfolios);
   }
+
+  const updatePortfolio = async (id: any) => {
+    const updatedPortfolio = await graphUpdatePortfolio(id);
+    const index = portfolios.findIndex((p: { _id: String; }) => p._id === id);
+    const newPortfolios = portfolios.slice();
+    newPortfolios[index] = updatedPortfolio;
+    setPortfolios(newPortfolios);
+  }
+
+  const deletePortfolio = async (id) => {
+    const deletedId = await graphDeletePortfolio(id);
+    const index = portfolios.findIndex(p => p._id === deletedId);
+    const newPortfolios = portfolios.slice();
+    newPortfolios.splice(index, 1);
+    setPortfolios(newPortfolios);
+  }
+
   return (
     <>
       <section className="section-title">
@@ -75,27 +125,33 @@ const Portfolios = ({ data }: any) => {
             <h1>Portfolios</h1>
           </div>
         </div>
-        <button className="btn btn-primary" onClick={createPortfolio}>Create Portfolio</button>
+        <button
+          onClick={createPortfolio}
+          className="btn btn-primary">Create Portfolio</button>
       </section>
       <section className="pb-5">
         <div className="row">
-          {portfolios.map((portfolio) => {
-            //console.log(portfolio._id);
-            return (<div className="col-md-4">
+          { portfolios.map(portfolio =>
+            <div key={portfolio._id} className="col-md-4">
               <Link
-                as={`portfolios/${portfolio && portfolio._id}`}
                 href='/portfolios/[id]'
-              >
+                as={`/portfolios/${portfolio._id}`}>
                 <a className="card-link">
-                  <PortfolioCard
-                    key={portfolio && portfolio._id}
-                    portfolio={portfolio}
-                  />
+                  <PortfolioCard portfolio={portfolio} />
                 </a>
               </Link>
-            </div>)
-          })}
-
+              <button
+                className="btn btn-warning"
+                onClick={() => updatePortfolio(portfolio._id)}>Update Portfolio
+              </button>
+              <button
+                onClick={() => deletePortfolio(portfolio._id)}
+                className="btn btn-danger">
+                Delete Portfolio
+              </button>
+            </div>
+          )
+          }
         </div>
       </section>
     </>
@@ -103,10 +159,10 @@ const Portfolios = ({ data }: any) => {
 }
 
 Portfolios.getInitialProps = async () => {
-  const portfolios = await fetchPortfolios()
-  //console.log(portfolios.data);
-
-  return { data: portfolios.data };
+  const portfolios = await fetchPortfolios();
+  return { data: { portfolios }};
 }
 
-export default Portfolios
+
+
+export default Portfolios;
